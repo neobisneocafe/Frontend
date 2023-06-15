@@ -18,7 +18,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Navigate to={{ pathname: '/login', state: { from: location.pathname } }} />;
   }
 
-  return <Component {...rest} />;
+  return (
+    <>
+      <Component {...rest} />
+    </>
+  )
 };
 
 export const appRouter = () =>
