@@ -1,1 +1,1 @@
-export {LoginForm} from './ui/LoginForm/LoginForm'
+export { MultiStep } from './ui/LoginForm/MultiStepForm'

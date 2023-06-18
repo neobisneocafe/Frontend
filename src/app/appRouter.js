@@ -15,7 +15,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const isAuthenticated = /* TODO: paste authentication logic here */ true;
 
   if (!isAuthenticated) {
-    return <Navigate to={{ pathname: '/login', state: { from: location.pathname } }} />;
+    return <Navigate to={{ pathname: '/', state: { from: location.pathname } }} />;
   }
 
   return (
@@ -28,11 +28,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 export const appRouter = () =>
   createBrowserRouter([
     {
-      path: '/login',
+      path: '/',
       element: <LoginPage />,
     },
     {
-      path: '/orders',
+      path: '/main',
       element: <PrivateRoute component={MainPage} />,
     },
     {
