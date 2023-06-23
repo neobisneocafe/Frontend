@@ -1,6 +1,6 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import React from 'react';
-import { createRoot } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { appRouter } from './appRouter';
 
@@ -8,6 +8,13 @@ const customTheme = extendTheme({
   fonts: {
     body: "'Nunito', sans-serif",
     heading: "'Nunito', sans-serif",
+  },
+  styles: {
+    global: {
+      body: {
+        bg: '#F5F5F5',
+      }
+    },
   },
 });
 

@@ -45,7 +45,7 @@ import { useNavigate } from 'react-router-dom';
                 _hover='#e57546'
                 color='white'
                 variant="outline"
-                onClick={() => navigate('main')}>
+                onClick={() => navigate('orders')}>
                 Войти
             </Button>
           </VStack>
