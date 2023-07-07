@@ -18,7 +18,15 @@ export function OrderCard({ order }) {
   const remainingItemCount = order.order_items.length - 3;
 
   return (
-    <Card w="243px" h="294px" boxShadow="none" p={4} borderRadius="10px">
+    <Card
+      w="243px"
+      h="294px"
+      boxShadow="none"
+      p={4}
+      borderRadius="10px"
+      _hover={{ bg: "#DCEDFF" }}
+      cursor="pointer"
+    >
       <IconButton
         icon={<CloseIcon />}
         position="absolute"
@@ -26,14 +34,14 @@ export function OrderCard({ order }) {
         top="8px"
         bg="unset"
         _hover={{
-            bg:"unset",
-            color:"#FF8B5B"
+          bg: "unset",
+          color: "#FF8B5B",
         }}
       />
       <CardHeader p={0} pb={0}>
         <Heading fontSize="22px">{order.order_id}</Heading>
         <Text fontSize="18px" color={"#8F8F8F"} mt="6px">
-          {order.customer_name}
+          {order.customer_name}, {order.order_place}
         </Text>
       </CardHeader>
       <CardBody p={0}>
@@ -69,8 +77,8 @@ export function OrderCard({ order }) {
           color="#FF8B5B"
           borderRadius="10px"
           _hover={{
-            bg:"#FF8B5B",
-            color:"#fff"
+            bg: "#FF8B5B",
+            color: "#fff",
           }}
         >
           Принять

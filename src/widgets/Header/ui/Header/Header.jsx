@@ -16,7 +16,6 @@ import { UserCircle } from "../Icons/UserCircle";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const LinkItems = [
-  // { name: "Заказы", icon: <Notepad/> },
   { name: "Заказы", icon: Notepad, path: "/orders" },
   { name: "Меню", icon: BookOpen, path: "/menu" },
   { name: "Профиль", icon: UserCircle, path: "/profile" },
