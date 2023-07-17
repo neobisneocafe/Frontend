@@ -14,6 +14,7 @@ import { BookOpen } from "../Icons/BookOpen";
 import { Notepad } from "../Icons/Notepad";
 import { UserCircle } from "../Icons/UserCircle";
 import { useLocation, useNavigate } from "react-router-dom";
+import { NotificationList } from "@/widgets/NotificationList";
 
 const LinkItems = [
   { name: "Заказы", icon: Notepad, path: "/orders" },
@@ -24,14 +25,7 @@ const LinkItems = [
 export function Header() {
   return (
     <Flex pos="fixed" h="full" bg="#023462" w={"7%"} flexDir={"column"}>
-      <IconButton
-        m="13px auto"
-        bg="#FEFEFE"
-        borderRadius="50%"
-        w="60px"
-        h="60px"
-        icon={<BellSimple />}
-      />
+      <NotificationList/>
 
       <Flex
         flexDir="column"
