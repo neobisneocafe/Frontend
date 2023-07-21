@@ -1,1 +1,3 @@
-export { MultiStep } from './ui/LoginForm/MultiStepForm'
+export { MultiStepForm } from './ui/barista/MultiStepForm'
+
+export { OneStepForm } from './ui/admin/OneStepForm'

@@ -1,0 +1,10 @@
+.nav_item:hover {
+    color: rgba(0, 49, 93, 1);
+}
+
+.nav_item#active{
+    color: rgba(0, 49, 93, 1);
+    p{
+        text-decoration: underline;
+    }
+}

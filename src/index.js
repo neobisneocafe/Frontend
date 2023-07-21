@@ -1,4 +1,15 @@
-import { createApp } from './app/appEntry';
-import './index.css'
+import { createAdminApp } from './adminApp/appEntry';
+import { createBaristaApp } from './baristaApp/appEntry';
+import './index.css';
 
-createApp();
+const createApp = (isAdminApp) => {
+  if (isAdminApp) {
+    createAdminApp();
+  } else {
+    createBaristaApp();
+  }
+};
+
+createApp(true);
+
+export { createApp };
