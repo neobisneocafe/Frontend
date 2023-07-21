@@ -8,7 +8,7 @@ export function Header({ name }) {
   const isEmployeesPage = location.pathname.includes("/employees");
 
   return (
-    <VStack w={"full"} margin="24px 44px 0 22px" gap={7}>
+    <VStack w={"full"} gap={7}>
       <Flex w={"full"} justifyContent="space-between">
         <Heading fontSize={"48px"} fontWeight={600}>
           {name}
