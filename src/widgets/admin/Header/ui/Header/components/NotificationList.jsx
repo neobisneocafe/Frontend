@@ -1,5 +1,8 @@
 // import { orders } from "@/shared/lib";
+import { NotificationCard } from "@/entities/barista/notification";
+import { orderNotifications } from "@/shared/lib";
 import {
+  Box,
   Button,
   Popover,
   PopoverBody,
@@ -34,7 +37,9 @@ export function NotificationList() {
           <PopoverCloseButton />
           <PopoverHeader>Уведомления</PopoverHeader>
           <PopoverBody>
-            Are you sure you want to have that milkshake?
+          <Box>
+
+          </Box>
           </PopoverBody>
         </PopoverContent>
       </Popover>

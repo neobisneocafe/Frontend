@@ -1,6 +1,26 @@
 import { Header } from "@/widgets/admin/Header";
+import { Search } from "@/widgets/admin/Header/ui/Header/components/Search";
 import { BranchesTable } from "@/widgets/admin/Table";
-import { Center } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
+import { CloudArrowUp } from "./CloudArrowUp";
 
 export function BranchesPage() {
   return (
@@ -15,7 +35,183 @@ export function BranchesPage() {
       gap={"3rem"}
     >
       <Header name="Филиалы" />
+      <Flex
+        w="full"
+        justifyContent={"space-between"}
+        gap={"2rem"}
+        alignItems="baseline"
+      >
+        <Search />
+        <CreateButton />
+      </Flex>
       <BranchesTable />
     </Center>
+  );
+}
+
+export function CreateButton() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <>
+      <Button
+        w={"13%"}
+        background="rgba(0, 49, 93, 1)"
+        color={"#fff"}
+        _hover={{}}
+        onClick={onOpen}
+      >
+        Создать
+      </Button>
+
+      <Modal isOpen={isOpen} onClose={onClose} alignItems="center">
+        <ModalOverlay />
+        <ModalContent borderRadius={"30px"} minW={"600px"} padding={"32px"}>
+          <ModalHeader p={0} fontWeight={700} fontSize="24px" mb="24px">
+            Новый филиал
+          </ModalHeader>
+          <ModalCloseButton fontSize={"xl"} top={6} right={6} />
+          <ModalBody p={0}>
+            <VStack gap={7} alignItems="start" as="form">
+              <Box w={"full"}>
+                <Text fontWeight={600} fontSize="22px">
+                  Добавьте фотографию филиала
+                </Text>
+                <Center
+                  width="530px"
+                  height="210px"
+                  background="rgba(244, 244, 244, 1)"
+                >
+                  <FormControl
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    border="1px dashed rgba(205, 211, 221, 1)"
+                    width="450px"
+                    height="170px"
+                    background="#fff"
+                  >
+                    <CloudArrowUp />
+                    <input
+                      className="input-field"
+                      type={"file"}
+                      accept="image/*"
+                      hidden
+                    />
+                    <Text textAlign="center">
+                      Перетащите изображение для добавления
+                    </Text>
+                    <Text
+                      textDecoration="underline"
+                      cursor="pointer"
+                      onClick={() =>
+                        document.querySelector(".input-field").click()
+                      }
+                    >
+                      или обзор
+                    </Text>
+                  </FormControl>
+                </Center>
+              </Box>
+
+              <Box w={"full"}>
+                <Text fontWeight={600} fontSize="22px">
+                  Название и адрес
+                </Text>
+                <FormControl mt={"16px"}>
+                  <FormLabel color={"rgba(193, 193, 195, 1)"} fontSize="16px">
+                    Название кофейни
+                  </FormLabel>
+                  <Input
+                    height={"65px"}
+                    background="rgba(237, 237, 237, 1)"
+                    border="none"
+                    isRequired
+                    placeholder="Название филиала"
+                  />
+                </FormControl>
+                <FormControl mt={"16px"}>
+                  <FormLabel color={"rgba(193, 193, 195, 1)"} fontSize="16px">
+                    Адрес
+                  </FormLabel>
+                  <Input
+                    height={"65px"}
+                    background="rgba(237, 237, 237, 1)"
+                    border="none"
+                    isRequired
+                    placeholder="Адрес нового филиала"
+                  />
+                </FormControl>
+                <FormControl mt={"16px"}>
+                  <FormLabel color={"rgba(193, 193, 195, 1)"} fontSize="16px">
+                    Номер телефона
+                  </FormLabel>
+                  <Input
+                    height={"65px"}
+                    background="rgba(237, 237, 237, 1)"
+                    border="none"
+                    isRequired
+                    placeholder="Введите номер телефона"
+                  />
+                </FormControl>
+              </Box>
+              <Box w={"full"}>
+                <Text fontWeight={600} fontSize="22px">
+                  Заполните график работы
+                </Text>
+                <FormControl mt={"16px"}>
+                  <FormLabel color={"rgba(193, 193, 195, 1)"} fontSize="16px">
+                    Время открытия
+                  </FormLabel>
+                  <Input
+                    height={"65px"}
+                    background="rgba(237, 237, 237, 1)"
+                    border="none"
+                    isRequired
+                    placeholder="Время открытия"
+                  />
+                </FormControl>
+                <FormControl mt={"16px"}>
+                  <FormLabel color={"rgba(193, 193, 195, 1)"} fontSize="16px">
+                    Время закрытия
+                  </FormLabel>
+                  <Input
+                    height={"65px"}
+                    background="rgba(237, 237, 237, 1)"
+                    border="none"
+                    isRequired
+                    placeholder="Время закрытия"
+                  />
+                </FormControl>
+              </Box>
+            </VStack>
+          </ModalBody>
+
+          <ModalFooter p={0} mt="48px" gap={6}>
+            <Button
+              height="55px"
+              w="full"
+              border="1px solid rgba(0, 49, 93, 1)"
+              color="rgba(0, 49, 93, 1)"
+              background="#fff"
+              onClick={onClose}
+            >
+              Отмена
+            </Button>
+            <Button
+              height="55px"
+              w="full"
+              background="rgba(0, 49, 93, 1)"
+              color="#fff"
+              _hover={{ background: "rgb(29 122 205)" }}
+              type="submit"
+            >
+              Сохранить
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }

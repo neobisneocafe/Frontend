@@ -7,9 +7,6 @@ import "./Page.scss";
 export function LoginPage() {
   return (
     <div className="loginPageAdmin">
-      <h1 >
-        Admin Login page
-      </h1>
       <OneStepForm/>
       <Link to="/">
         <Button onClick={() => createApp(false)}>Barista Login</Button>

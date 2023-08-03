@@ -1,0 +1,12 @@
+[
+    {
+      "name": "string",
+      "position": "string",
+      "branch": {
+        "id": 0,
+        "name": "string"
+      },
+      "phone_number": "string",
+      "birth_date": "2023-07-21"
+    }
+  ]

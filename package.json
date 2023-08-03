@@ -1,5 +1,6 @@
 {
   "name": "neocafe-1",
+  "proxy": "https://neo-cafe-neobis-d301ec8e3f9a.herokuapp.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,6 +12,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
     "formik": "^2.4.2",
     "framer-motion": "^10.12.16",
     "react": "^18.2.0",
@@ -19,6 +22,9 @@
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.12.1",
     "react-scripts": "^5.0.1",
+    "redux": "^4.2.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.2",
     "sass": "^1.63.3",
     "web-vitals": "^2.1.4",
     "yup": "^1.2.0"

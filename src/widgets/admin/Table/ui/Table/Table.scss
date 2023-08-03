@@ -1,4 +1,25 @@
 th.css-1zts0j{
     color:#000;
     font-weight:700;
+    text-transform: unset;
+    font-size: 18px;
+}
+.chakra-tabs__tab-panel{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-top: 32px;
+}
+
+.chakra-menu__menu-button{
+    padding:0 !important;
+    background:inherit !important;
+    font-size:18px !important;
+    font-weight:700 !important;
+}
+
+.chakra-menu__menuitem{
+    justify-content:space-between;
+    &:hover svg{
+        visibility: visible;
+    }
 }

@@ -15,7 +15,7 @@ export function Header({ name }) {
         </Heading>
         <NotificationList />
       </Flex>
-      <Flex w="full" justifyContent={"space-between"} gap={"2rem"} alignItems="baseline">
+      {/* <Flex w="full" justifyContent={"space-between"} gap={"2rem"} alignItems="baseline">
         <Search isEmployeesPage={isEmployeesPage}/>
         <Button
           w={"15%"}
@@ -25,8 +25,10 @@ export function Header({ name }) {
         >
           Создать
         </Button>
+
         { isEmployeesPage? (<Checkbox >Фильтр по рейтингу</Checkbox>):"" }
-      </Flex>
+
+      </Flex> */}
     </VStack>
   );
 }
