@@ -1,11 +1,10 @@
-import { Button, Checkbox, Flex, Heading, VStack } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { Flex, Heading, VStack } from "@chakra-ui/react";
+// import { useLocation } from "react-router-dom";
 import { NotificationList } from "./components/NotificationList";
-import { Search } from "./components/Search";
 
 export function Header({ name }) {
-  const location = useLocation();
-  const isEmployeesPage = location.pathname.includes("/employees");
+  // const location = useLocation();
+  // const isEmployeesPage = location.pathname.includes("/employees");
 
   return (
     <VStack w={"full"} gap={7}>

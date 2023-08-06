@@ -12,9 +12,10 @@ const basicAuthCredentials = {
 
 export const endpoints = {
   categoryList: `${apiConfig.pythonApiBaseUrl}/api/menu/menu-categories/`,
-  branchList: `${apiConfig.nodeJsApiBaseUrl}/api/branch`,
+  branchList: `${apiConfig.pythonApiBaseUrl}/api/stuff/branches/`,
   productList: `${apiConfig.pythonApiBaseUrl}/api/menu/products/`,
-  dishList: `${apiConfig.pythonApiBaseUrl}/api/menu/menu-items/`
+  dishList: `${apiConfig.pythonApiBaseUrl}/api/menu/menu-items/`,
+  employeesList: `${apiConfig.pythonApiBaseUrl}/api/stuff/employees/`,
 };
 
 

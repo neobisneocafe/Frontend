@@ -1,6 +1,3 @@
-// import { orders } from "@/shared/lib";
-import { NotificationCard } from "@/entities/barista/notification";
-import { orderNotifications } from "@/shared/lib";
 import {
   Box,
   Button,

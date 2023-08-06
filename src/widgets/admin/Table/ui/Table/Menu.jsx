@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import {
   Button,
+  Center,
   Container,
+  IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Select,
+  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -15,18 +17,17 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Pagination } from "../Pagination";
 import "./Table.scss";
-import MenuData from "./MenuData.json";
-import { EditButton } from "../components/EditButton";
-import axios from "axios";
 import instance, { endpoints } from "@/shared/api/apiConfig";
 import {
   AddIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   DeleteIcon,
+  EditIcon,
 } from "@chakra-ui/icons";
+import { DotsIcon } from "../components/DotsIcon";
+import { Paginaiton } from "@/widgets/admin/Pagination";
 
 export function MenuTable() {
   const [categoryList, setCategoryList] = useState([]);
@@ -35,7 +36,7 @@ export function MenuTable() {
 
   useEffect(() => {
     async function fetctCategoryList() {
-      const { data } = await axios.get(endpoints.categoryList);
+      const { data } = await instance.get(endpoints.categoryList);
       setCategoryList(data);
     }
     fetctCategoryList();
@@ -62,7 +63,6 @@ export function MenuTable() {
       productList.find((product) => product.id === productId)
     );
 
-    // Find the category for the current dish
     const category = categoryList.find(
       (category) => category.id === dish.category
     );
@@ -70,16 +70,30 @@ export function MenuTable() {
     return {
       id: dish.id,
       name: dish.name,
-      category: category ? category.name : "", // Use category name if found, otherwise empty string
+      category: category ? category.name : "",
       composition: productsInDish.map((product) => product.name).join(", "),
       price: dish.price,
       description: dish.description,
       image: dish.image,
     };
   });
+
+  const itemsPerPage = 6;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const paginatedData = combinedData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  const startingIndex = (currentPage - 1) * itemsPerPage;
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <Container maxW={"full"}>
-      <TableContainer w={"full"} height={"55vh"}>
+      <TableContainer w={"full"} height={"60vh"}>
         <Table variant="simple">
           <Thead>
             <Tr borderBottom={"2px solid #000"}>
@@ -115,35 +129,60 @@ export function MenuTable() {
                   )}
                 </Menu>
               </Th>
-              <Th>Состав блюда и граммовка</Th>
+              <Th>Состав блюда</Th>
               <Th>Стоимость</Th>
               <Th>Ред.</Th>
             </Tr>
           </Thead>
           <Tbody background={"rgba(249, 249, 249, 1)"}>
-            {combinedData.map((d, i) => (
-              <Tr key={i}>
-                <Td color={"rgba(0, 49, 93, 1)"} fontWeight={700}>
-                  №{i + 1}
-                </Td>
-
-                <Td>{d.name}</Td>
-                <Td>{d.category}</Td>
-                <Td>{d.composition}</Td>
-                <Td>{d.price} сом</Td>
-                <Td>
-                  <EditButton />
+            {combinedData.length > 0 ? (
+              paginatedData.map((d, i) => (
+                <Tr key={i}>
+                  <Td color={"rgba(0, 49, 93, 1)"} fontWeight={700}>
+                  №{startingIndex + i + 1} 
+                  </Td>
+                  <Td>{d.name}</Td>
+                  <Td>{d.category}</Td>
+                  <Td>{d.composition}</Td>
+                  <Td>{d.price} сом</Td>
+                  <Td>
+                    <Menu>
+                      <MenuButton
+                        as={IconButton}
+                        aria-label="Options"
+                        icon={<DotsIcon />}
+                        variant="outline"
+                        border={"none"}
+                        _hover={{}}
+                      />
+                      <MenuList>
+                        <MenuItem icon={<EditIcon />}>Редактировать</MenuItem>
+                        <MenuItem
+                          icon={<DeleteIcon />}
+                          // onClick={() => handleDelete(d.id)}
+                        >
+                          Удалить
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Td>
+                </Tr>
+              ))
+            ) : (
+              <Tr>
+                <Td colSpan={8}>
+                  <Center>
+                    <Spinner size="xl" />
+                  </Center>
                 </Td>
               </Tr>
-            ))}
+            )}
           </Tbody>
         </Table>
       </TableContainer>
-      {/* <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(MenuData.length / recordPerPage)}
-        onPageChange={handlePageChange}
-      /> */}
+      <Paginaiton currentPage={currentPage}
+        totalPages={Math.ceil(combinedData.length / itemsPerPage)}
+        onPageChange={handlePageChange}/>
     </Container>
   );
 }

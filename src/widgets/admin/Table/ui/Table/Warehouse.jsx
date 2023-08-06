@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Container,
-  Select,
   Tab,
   TabIndicator,
   Table,
@@ -21,14 +20,14 @@ import {
   MenuItem,
   MenuList,
   useToast,
+  Center,
+  Spinner,
 } from "@chakra-ui/react";
-import { Pagination } from "../Pagination";
 import "./Table.scss";
-import MenuData from "./MenuData.json";
-import axios from "axios";
 import instance, { endpoints } from "@/shared/api/apiConfig";
 import { DotsIcon } from "../components/DotsIcon";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { Paginaiton } from "@/widgets/admin/Pagination";
 
 export function WarehouseTable() {
   const toast = useToast();
@@ -51,9 +50,12 @@ export function WarehouseTable() {
     fetchDishList();
   }, []);
 
-  const lowQuantityProducts = productList.filter(
-    (product) => product.quantity <= product.min_limit
-  );
+  const lowQuantityProducts = [...productList, ...dishList].filter((item) => {
+    const quantity = parseInt(item.quantity, 10);
+    const minLimit = parseInt(item.min_limit, 10);
+    return quantity <= minLimit;
+  });
+
 
   const handleDelete = async (productId) => {
     try {
@@ -78,17 +80,27 @@ export function WarehouseTable() {
     }
   };
 
-  // const recordPerPage = 5;
-  // const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // const lastIndex = currentPage * recordPerPage;
-  // const firstIndex = lastIndex - recordPerPage;
-  // const currentMenuData = MenuData.slice(firstIndex, lastIndex);
-  // const currentProductList = productList.slice(firstIndex, lastIndex);
+  const dishListData = dishList.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  const productListData = productList.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  const lowQuantityProductsData = lowQuantityProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
-  // const handlePageChange = (page) => {
-  //   setCurrentPage(page);
-  // };
+  const startingIndex = (currentPage - 1) * itemsPerPage;
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <Container maxW={"full"}>
@@ -105,6 +117,7 @@ export function WarehouseTable() {
           borderRadius="1px"
         />
         <TabPanels>
+          {/* Dishes */}
           <TabPanel>
             <TableContainer w={"full"} height={"55vh"}>
               <Table variant="simple">
@@ -118,126 +131,80 @@ export function WarehouseTable() {
                     <Th>Ред.</Th>
                   </Tr>
                 </Thead>
-                <Tbody>
-                  {dishList.map((d, i) => (
-                    <Tr key={i}>
-                      <Td color={"rgba(0, 49, 93, 1)"} fontWeight={700}>
-                        №{i + 1}
-                      </Td>
-                      <Td>{d.name}</Td>
-                      <Td>{d.quantity} шт</Td>
-                      <Td>{d.min_limit} шт</Td>
-                      <Td>{d.arrivalDate}</Td>
-                      <Td>
-                        <Menu>
-                          <MenuButton
-                            as={IconButton}
-                            aria-label="Options"
-                            icon={<DotsIcon />}
-                            variant="outline"
-                            border={"none"}
-                            _hover={{}}
-                          />
-                          <MenuList>
-                            <MenuItem icon={<EditIcon />}>
-                              Редактировать
-                            </MenuItem>
-                            <MenuItem
-                              icon={<DeleteIcon />}
-                              onClick={() => console.log(d.id)}
-                            >
-                              Удалить
-                            </MenuItem>
-                          </MenuList>
-                        </Menu>
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            {/* <Pagination
-              currentPage={currentPage}
-              totalPages={Math.ceil(MenuData.length / recordPerPage)}
-              onPageChange={handlePageChange}
-            /> */}
-          </TabPanel>
-          <TabPanel>
-            <TableContainer w={"full"} height={"55vh"}>
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>№</Th>
-                    <Th>Наименование</Th>
-                    <Th>Количество</Th>
-                    <Th>Лимит</Th>
-                    <Th>Дата прихода</Th>
-                    <Th>Ред.</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {productList.map((d, i) => (
-                    <Tr key={i}>
-                      <Td color={"rgba(0, 49, 93, 1)"} fontWeight={700}>
-                        №{i + 1}
-                      </Td>
-                      <Td>{d.name}</Td>
-                      <Td>{d.quantity} кг/л</Td>
-                      <Td>{d.min_limit} кг/л</Td>
-                      <Td>{d.arrival_date}</Td>
-                      <Td>
-                        <Menu>
-                          <MenuButton
-                            as={IconButton}
-                            aria-label="Options"
-                            icon={<DotsIcon />}
-                            variant="outline"
-                            border={"none"}
-                            _hover={{}}
-                          />
-                          <MenuList>
-                            <MenuItem icon={<EditIcon />}>
-                              Редактировать
-                            </MenuItem>
-                            <MenuItem
-                              icon={<DeleteIcon />}
-                              onClick={() => handleDelete(d.id)}
-                            >
-                              Удалить
-                            </MenuItem>
-                          </MenuList>
-                        </Menu>
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            {/* <Pagination
-              currentPage={currentPage}
-              totalPages={Math.ceil(MenuData.length / recordPerPage)}
-              onPageChange={handlePageChange}
-            /> */}
-          </TabPanel>
-          <TabPanel>
-            <TableContainer w={"full"} height={"55vh"}>
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>№</Th>
-                    <Th>Наименование</Th>
-                    <Th>Количество</Th>
-                    <Th>Лимит</Th>
-                    <Th>Дата прихода</Th>
-                    <Th>Ред.</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {lowQuantityProducts.length > 0 ? (
-                    lowQuantityProducts.map((d, i) => (
+                <Tbody background={"rgba(249, 249, 249, 1)"}>
+                  {dishList.length > 0 ? (
+                    dishListData.map((d, i) => (
                       <Tr key={i}>
                         <Td color={"rgba(0, 49, 93, 1)"} fontWeight={700}>
-                          №{i + 1}
+                          №{startingIndex + i + 1}
+                        </Td>
+                        <Td>{d.name}</Td>
+                        <Td>{d.quantity} шт</Td>
+                        <Td>{d.min_limit} шт</Td>
+                        <Td>{d.arrivalDate}</Td>
+                        <Td>
+                          <Menu>
+                            <MenuButton
+                              as={IconButton}
+                              aria-label="Options"
+                              icon={<DotsIcon />}
+                              variant="outline"
+                              border={"none"}
+                              _hover={{}}
+                            />
+                            <MenuList>
+                              <MenuItem icon={<EditIcon />}>
+                                Редактировать
+                              </MenuItem>
+                              <MenuItem
+                                icon={<DeleteIcon />}
+                                onClick={() => console.log(d.id)}
+                              >
+                                Удалить
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Td>
+                      </Tr>
+                    ))
+                  ) : (
+                    <Tr>
+                      <Td colSpan={8}>
+                        <Center>
+                          <Spinner size="xl" />
+                        </Center>
+                      </Td>
+                    </Tr>
+                  )}
+                </Tbody>
+              </Table>
+            </TableContainer>
+            <Paginaiton
+              currentPage={currentPage}
+              totalPages={Math.ceil(dishList.length / itemsPerPage)}
+              onPageChange={handlePageChange}
+            />
+          </TabPanel>
+          {/* Products */}
+          <TabPanel>
+            <TableContainer w={"full"} height={"55vh"}>
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>№</Th>
+                    <Th>Наименование</Th>
+                    <Th>Количество</Th>
+                    <Th>Лимит</Th>
+                    <Th>Дата прихода</Th>
+                    <Th>Ред.</Th>
+                  </Tr>
+                </Thead>
+                <Tbody background={"rgba(249, 249, 249, 1)"}>
+                  {productList.length > 0 ? (
+                    productListData.map((d, i) => (
+                      <Tr key={i}>
+                        <Td color={"rgba(0, 49, 93, 1)"} fontWeight={700}>
+                          №{startingIndex + i + 1}
                         </Td>
                         <Td>{d.name}</Td>
                         <Td>{d.quantity} кг/л</Td>
@@ -270,7 +237,75 @@ export function WarehouseTable() {
                     ))
                   ) : (
                     <Tr>
-                      <Td colSpan={6} textAlign="center">
+                      <Td colSpan={8}>
+                        <Center>
+                          <Spinner size="xl" />
+                        </Center>
+                      </Td>
+                    </Tr>
+                  )}
+                </Tbody>
+              </Table>
+            </TableContainer>
+            <Paginaiton
+              currentPage={currentPage}
+              totalPages={Math.ceil(dishList.length / itemsPerPage)}
+              onPageChange={handlePageChange}
+            />
+          </TabPanel>
+          {/* LowQuantity */}
+          <TabPanel>
+            <TableContainer w={"full"} height={"55vh"}>
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>№</Th>
+                    <Th>Наименование</Th>
+                    <Th>Количество</Th>
+                    <Th>Лимит</Th>
+                    <Th>Дата прихода</Th>
+                    <Th>Ред.</Th>
+                  </Tr>
+                </Thead>
+                <Tbody background={"rgba(249, 249, 249, 1)"}>
+                  {lowQuantityProducts.length > 0 ? (
+                    lowQuantityProductsData.map((d, i) => (
+                      <Tr key={i}>
+                        <Td color={"rgba(0, 49, 93, 1)"} fontWeight={700}>
+                          №{startingIndex + i + 1}
+                        </Td>
+                        <Td>{d.name}</Td>
+                        <Td>{d.quantity} кг/л</Td>
+                        <Td>{d.min_limit} кг/л</Td>
+                        <Td>{d.arrival_date}</Td>
+                        <Td>
+                          <Menu>
+                            <MenuButton
+                              as={IconButton}
+                              aria-label="Options"
+                              icon={<DotsIcon />}
+                              variant="outline"
+                              border={"none"}
+                              _hover={{}}
+                            />
+                            <MenuList>
+                              <MenuItem icon={<EditIcon />}>
+                                Редактировать
+                              </MenuItem>
+                              <MenuItem
+                                icon={<DeleteIcon />}
+                                onClick={() => handleDelete(d.id)}
+                              >
+                                Удалить
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Td>
+                      </Tr>
+                    ))
+                  ) : (
+                    <Tr>
+                      <Td colSpan={8} textAlign="center">
                         Всё в достатке
                       </Td>
                     </Tr>
@@ -278,6 +313,11 @@ export function WarehouseTable() {
                 </Tbody>
               </Table>
             </TableContainer>
+            <Paginaiton
+              currentPage={currentPage}
+              totalPages={Math.ceil(dishList.length / itemsPerPage)}
+              onPageChange={handlePageChange}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

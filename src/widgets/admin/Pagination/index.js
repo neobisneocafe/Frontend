@@ -1,0 +1,1 @@
+export { Paginaiton } from "./ui/Pagination"
