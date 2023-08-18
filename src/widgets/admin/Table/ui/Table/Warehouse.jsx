@@ -22,6 +22,7 @@ import {
   useToast,
   Center,
   Spinner,
+  Input,
 } from "@chakra-ui/react";
 import "./Table.scss";
 import instance, { endpoints } from "@/shared/api/apiConfig";
@@ -56,7 +57,6 @@ export function WarehouseTable() {
     return quantity <= minLimit;
   });
 
-
   const handleDelete = async (productId) => {
     try {
       await instance.delete(`${endpoints.productList}${productId}`);
@@ -80,7 +80,7 @@ export function WarehouseTable() {
     }
   };
 
-  const itemsPerPage = 6;
+  const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
 
   const dishListData = dishList.slice(
@@ -101,6 +101,8 @@ export function WarehouseTable() {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const pageCount = Math.ceil(dishList.length / itemsPerPage);
 
   return (
     <Container maxW={"full"}>
@@ -179,11 +181,15 @@ export function WarehouseTable() {
                 </Tbody>
               </Table>
             </TableContainer>
-            <Paginaiton
-              currentPage={currentPage}
-              totalPages={Math.ceil(dishList.length / itemsPerPage)}
-              onPageChange={handlePageChange}
-            />
+            {pageCount >= 2 ? (
+              <Paginaiton
+                currentPage={currentPage}
+                totalPages={pageCount}
+                onPageChange={handlePageChange}
+              />
+            ) : (
+              <Input type={"hidden"} />
+            )}
           </TabPanel>
           {/* Products */}
           <TabPanel>
@@ -247,11 +253,15 @@ export function WarehouseTable() {
                 </Tbody>
               </Table>
             </TableContainer>
-            <Paginaiton
-              currentPage={currentPage}
-              totalPages={Math.ceil(dishList.length / itemsPerPage)}
-              onPageChange={handlePageChange}
-            />
+            {pageCount >= 2 ? (
+              <Paginaiton
+                currentPage={currentPage}
+                totalPages={pageCount}
+                onPageChange={handlePageChange}
+              />
+            ) : (
+              <Input type={"hidden"} />
+            )}
           </TabPanel>
           {/* LowQuantity */}
           <TabPanel>
@@ -313,11 +323,15 @@ export function WarehouseTable() {
                 </Tbody>
               </Table>
             </TableContainer>
-            <Paginaiton
-              currentPage={currentPage}
-              totalPages={Math.ceil(dishList.length / itemsPerPage)}
-              onPageChange={handlePageChange}
-            />
+            {pageCount > 2 ? (
+              <Paginaiton
+                currentPage={currentPage}
+                totalPages={pageCount}
+                onPageChange={handlePageChange}
+              />
+            ) : (
+              <Input type={"hidden"} />
+            )}
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 export function DishCard({ dish }) {
+
   return (
     <Card
       w={318}

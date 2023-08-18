@@ -1,20 +1,27 @@
-
 import { Center, Flex, VStack } from "@chakra-ui/react";
 import { MenuCategoryFilter } from "./MenuCategoryFilter";
-import { DishList } from "@/shared/lib";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DishCard } from "@/entities/barista/dish";
+import instance, { endpoints } from "@/shared/api/apiConfig";
 
 
 export function MenuList() {
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState(1);
+  const [dishList, setDishList] = useState([]);
 
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState("Кофе");
+  useEffect(() => {
+    async function fetchDishList() {
+      const { data } = await instance.get(endpoints.dishList);
+      setDishList(data);
+    }
+    fetchDishList();
+  }, []);
 
-  const filteredDishList = DishList.filter(
+
+  const filteredDishList = dishList.filter(
     (dish) =>
       dish.category === activeCategoryFilter
   );
-
   return (
     <VStack w="full">
       <Center w="100%" h="87px" bg="#FF8B5B" color="#fff" fontSize="26px" fontWeight={600}>

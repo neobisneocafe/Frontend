@@ -1,23 +1,51 @@
+import instance, { endpoints } from "@/shared/api/apiConfig";
 import {
   Box,
   Button,
+  Center,
+  CloseButton,
+  Flex,
   Popover,
   PopoverBody,
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-
+  Text,
+  VStack,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { BellSimple } from "./Icons/BellSimple";
 
 export function NotificationList() {
+  const [productList, setProductList] = useState([]);
+  const [dishList, setDishList] = useState([]);
+
+  useEffect(() => {
+    async function fetchProductList() {
+      const { data } = await instance.get(endpoints.productList);
+      setProductList(data);
+    }
+    fetchProductList();
+  }, []);
+
+  useEffect(() => {
+    async function fetchDishList() {
+      const { data } = await instance.get(endpoints.dishList);
+      setDishList(data);
+    }
+    fetchDishList();
+  }, []);
+
+  const lowQuantityProducts = [...productList, ...dishList].filter((item) => {
+    const quantity = parseInt(item.quantity, 10);
+    const minLimit = parseInt(item.min_limit, 10);
+    return quantity <= minLimit;
+  });
+
+  console.log(lowQuantityProducts);
   return (
     <>
-      {/* <IconButton
-        icon={<BellSimple />}
-        onClick={onOpen}
-      /> */}
       <Popover>
         <PopoverTrigger>
           <Button
@@ -30,34 +58,57 @@ export function NotificationList() {
             <BellSimple />
           </Button>
         </PopoverTrigger>
-        <PopoverContent inset={"10px auto auto -10px;"}>
-          <PopoverCloseButton />
-          <PopoverHeader>Уведомления</PopoverHeader>
+        <PopoverContent
+          background={"rgba(0, 49, 93, 1)"}
+          inset={"10px auto auto -10px;"}
+          color="#fff"
+          width="440px"
+        >
+          <PopoverCloseButton top={2}/>
+          <PopoverHeader textAlign={"center"}>Уведомления</PopoverHeader>
           <PopoverBody>
-          <Box>
+            <Text textAlign={"right"} m="5px auto 10px" width="400px">
+              Очистить всё
+            </Text>
+            {lowQuantityProducts.length > 0 ? (
+              lowQuantityProducts.map((p, i) => (
+              <Box
+                width="400px"
+                background="#fff"
+                color="rgba(0, 49, 93, 1)"
+                borderRadius={"6px"}
+                m="0 auto"
+                p={"10px"}
+              >
+                <VStack alignItems={"start"}>
+                  <Flex
+                    alignItems={"center"}
+                    width={"100%"}
+                    justifyContent="space-between"
+                  >
+                    <Text fontWeight={700}>Oт {p.arrival_date}</Text>
+                    <CloseButton height={"unset"} />
+                  </Flex>
+                  <Text>Заканчивается продукт: {p.name}</Text>
+                  <Text>Филиал:</Text>
+                </VStack>
+              </Box>))
 
-          </Box>
+            ):(
+              <Box
+                width="400px"
+                background="#fff"
+                color="rgba(0, 49, 93, 1)"
+                borderRadius={"6px"}
+                m="0 auto"
+                p={"10px"}
+              >
+                <Center>Всё в достатке</Center>
+              </Box>
+            )}
           </PopoverBody>
         </PopoverContent>
       </Popover>
-      {/* <Drawer placement={"left"} onClose={onClose} isOpen={isOpen}>
-        <DrawerOverlay />
-        <DrawerContent bg={"#023462"} color={"#fff"} px={"32px"} maxWidth={"495px"}>
-          <DrawerHeader justifyContent={"space-between"} display={"flex"} px={0} alignItems={"center"}>
-            <VisuallyHidden position={"unset"}>empty</VisuallyHidden>
-            <Text fontSize="26px" fontWeight={600}>Уведомления</Text>
-            <CloseButton size={"lg"} onClick={onClose}/>
-          </DrawerHeader>
-          <DrawerBody px={0}>
-            {
-              orderNotifications.map((order)=>(
-                <NotificationCard key={order.order_id} order={order}/>
-
-              ))
-            }
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer> */}
     </>
   );
 }

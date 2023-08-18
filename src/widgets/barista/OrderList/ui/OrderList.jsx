@@ -1,21 +1,33 @@
 
 import { Flex, VStack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OrderPlaceFilter } from "./OrderPlaceFilter";
 import { OrderStatusFilter } from "./OrderStatusFilter";
-import { orders } from "@/shared/lib";
+// import { orders } from "@/shared/lib";
 import { OrderCard } from "@/entities/barista/order";
+import instance, { endpoints } from "@/shared/api/apiConfig";
 
 
 export function OrderList() {
 
-  const [activeStatusFilter, setActiveStatusFilter] = useState("Новый");
-  const [activePlaceFilter, setActivePlaceFilter] = useState("На вынос");
+  const [activeStatusFilter, setActiveStatusFilter] = useState("новый");
+  const [activePlaceFilter, setActivePlaceFilter] = useState(false);
+  const [orderList, setOrderList] = useState([]);
 
-  const filteredOrders = orders.filter(
+  useEffect(() => {
+    async function fetctOrderList() {
+      const { data } = await instance.get(endpoints.orderList);
+      setOrderList(data);
+    }
+    fetctOrderList();
+  }, []);
+
+
+  const filteredOrders = orderList.filter(
     (order) =>
-      order.order_status === activeStatusFilter &&
-      order.order_place === activePlaceFilter
+      order.status === activeStatusFilter 
+      &&
+      order.is_takeaway === activePlaceFilter
   );
 
   return (
@@ -25,7 +37,7 @@ export function OrderList() {
       <Flex gap={6} w="full" mt={6} justifyContent="center" flexWrap="wrap">
       {
         filteredOrders.map((order)=>(
-          <OrderCard key={order.order_id} order={order}/>
+          <OrderCard key={order.id} order={order}/>
         ))
       }
       </Flex>

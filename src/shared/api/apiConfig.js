@@ -11,11 +11,15 @@ const basicAuthCredentials = {
 };
 
 export const endpoints = {
+  adminAuth: `${apiConfig.nodeJsApiBaseUrl}/api/auth/login/admin`,
+  baristaSendCode: `${apiConfig.nodeJsApiBaseUrl}/api/auth/login/send-verification-code`,
+  baristaVerifyCode:`${apiConfig.nodeJsApiBaseUrl}/api/auth/login/verify`,
   categoryList: `${apiConfig.pythonApiBaseUrl}/api/menu/menu-categories/`,
   branchList: `${apiConfig.pythonApiBaseUrl}/api/stuff/branches/`,
   productList: `${apiConfig.pythonApiBaseUrl}/api/menu/products/`,
   dishList: `${apiConfig.pythonApiBaseUrl}/api/menu/menu-items/`,
   employeesList: `${apiConfig.pythonApiBaseUrl}/api/stuff/employees/`,
+  orderList: `${apiConfig.pythonApiBaseUrl}/api/barista/orders/`
 };
 
 

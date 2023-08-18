@@ -17,8 +17,9 @@ import { SideNavbar } from "@/widgets/barista/SideNavbar";
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const location = useLocation();
 
-  /* TODO: paste authentication logic here */ 
-  const isAuthenticated = true;
+  const accessToken = localStorage.getItem("access_token");
+
+  const isAuthenticated = !!accessToken;
 
   if (!isAuthenticated) {
     return <Navigate to={{ pathname: '/', state: { from: location.pathname } }} />;
@@ -54,8 +55,4 @@ export const appRouter = () =>
             { path: 'schedule', element: <SchedulePage /> },
           ],
     },
-    // {
-    //   path: '*',
-    //   element: <ErrorPage />,
-    // }
   ]);

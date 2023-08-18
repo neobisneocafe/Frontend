@@ -271,9 +271,9 @@ export const orderNotifications = [
 ]
 
 export const orderStatus = [
-  { color: "#FF5151", status: "Новый" },
-  { color: "#F9B70F", status: "В процессе" },
-  { color: "#37D400", status: "Готово" },
-  { color: "#171717", status: "Отменено" },
-  { color: "#717171", status: "Завершено" },
+  { color: "#FF5151", status: "новый", title: "Новый" },
+  { color: "#F9B70F", status: "в_процессе", title: "В процессе"  },
+  { color: "#37D400", status: "готово", title: "Готово"  },
+  { color: "#171717", status: "отменено", title: "Отменено"  },
+  { color: "#717171", status: "оплачено", title: "Завершено"  },
 ];

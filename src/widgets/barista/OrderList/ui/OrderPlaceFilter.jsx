@@ -1,8 +1,9 @@
 import { Button, HStack } from "@chakra-ui/react";
 
 export function OrderPlaceFilter({ activeFilter, setActiveFilter }) {
-  const handleFilterClick = (place) => {
-    setActiveFilter(place === activeFilter ? "" : place);
+
+  const handleFilterClick = (is_takeaway) => {
+    setActiveFilter(is_takeaway);
   };
 
   return (
@@ -10,26 +11,26 @@ export function OrderPlaceFilter({ activeFilter, setActiveFilter }) {
       <Button
         w="50%"
         h="full"
-        bg={activeFilter === "На вынос" ? "#FF8B5B" : "#DCEDFF"}
-        color={activeFilter === "На вынос" ? "#fff" : "#000"}
+        bg={activeFilter  ? "#FF8B5B" : "#DCEDFF"}
+        color={activeFilter ? "#fff" : "#000"}
         borderRadius={0}
         fontSize="26px"
         _hover={{
         }}
-        onClick={() => handleFilterClick("На вынос")}
+        onClick={() => handleFilterClick(true)}
       >
         На вынос
       </Button>
       <Button
         w="50%"
         h="full"
-        bg={activeFilter === "В заведении" ?   "#FF8B5B" : "#DCEDFF"}
-        color={activeFilter === "В заведении" ?   "#fff" : "#000"}
+        bg={activeFilter ?    "#DCEDFF": "#FF8B5B"}
+        color={activeFilter ? "#000":  "#fff" }
         borderRadius={0}
         fontSize="26px"
         _hover={{
         }}
-        onClick={() => handleFilterClick("В заведении")}
+        onClick={() => handleFilterClick(false)}
       >
         В заведении
       </Button>

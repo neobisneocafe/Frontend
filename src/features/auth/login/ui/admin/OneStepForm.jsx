@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; 
+import instance, { endpoints } from "@/shared/api/apiConfig";
 
 export function OneStepForm() {
   const navigate = useNavigate();
@@ -38,8 +38,8 @@ export function OneStepForm() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
-        "/api/auth/login/admin",
+      const response = await instance.post(
+        endpoints.adminAuth,
         {
           username: usernameValue,
           password: passwordValue,
@@ -51,8 +51,6 @@ export function OneStepForm() {
 
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refreshToken);
-      // console.log("access_token", access_token)
-      // console.log("refresh_token", refreshToken)
 
       navigate("/admin/menu");
     } catch (error) {

@@ -64,7 +64,7 @@ export function LoginForm3() {
           />
         </FormControl>
 
-        <FormControl>
+        {/* <FormControl>
           <FormLabel fontWeight={600} textAlign={"center"} color="#8F8F8F">
             Дата рождения
           </FormLabel>
@@ -75,7 +75,7 @@ export function LoginForm3() {
             minHeight={70}
             bg="#EDEDED"
           />
-        </FormControl>
+        </FormControl> */}
 
         <Button
           w={"100%"}

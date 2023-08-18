@@ -2,12 +2,13 @@ import { Box, Button, HStack } from "@chakra-ui/react";
 import { orderStatus } from "@/shared/lib";
 
 export function OrderStatusFilter({ activeFilter, setActiveFilter }) {
+
   const handleFilterClick = (status) => {
     setActiveFilter(status === activeFilter ? "" : status);
   };
 
   return (
-    <HStack w="full" h="49px" justifyContent="center" mt={8}>
+    <HStack w="full" h="49px" justifyContent="center" mt={8} gap={16}>
       {orderStatus.map((item) => (
         <Button
           w="153px"
@@ -25,7 +26,7 @@ export function OrderStatusFilter({ activeFilter, setActiveFilter }) {
           bg={activeFilter === item.status ? "#FF8B5B" : "inherit"}
           onClick={() => handleFilterClick(item.status)}
         >
-          {item.status}
+          {item.title}
         </Button>
       ))}
     </HStack>

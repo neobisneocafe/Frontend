@@ -7,7 +7,6 @@ import "./Page.scss";
 export function LoginPage() {
   return (
     <div className="loginPage">
-      <h1>Login page</h1>
       <MultiStepForm />
       <Link to="/admin">
         <Button onClick={() => createApp(true)}>Admin Login</Button>

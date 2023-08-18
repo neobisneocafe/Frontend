@@ -1,3 +1,4 @@
+import instance, { endpoints } from "@/shared/api/apiConfig";
 import {
   Heading,
   FormControl,
@@ -12,15 +13,15 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export function LoginForm2({ nextStep }) {
-  const code = 3333;
-
   const [secretCodeValue, setSecretCodeValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [accessToken, setAccessToken] = useState("");
+  const [isResendDisabled, setIsResendDisabled] = useState(false);
 
   const phone = useSelector((state) => state.user.value.phoneNumber);
 
   const handleNext = () => {
-    if (secretCodeValue === code.toString()) {
+    if (accessToken) {
       nextStep();
     } else {
       setErrorMessage("Неправильный код");
@@ -36,14 +37,56 @@ export function LoginForm2({ nextStep }) {
   const isInvalid = errorMessage !== "";
 
   const resendTimer = 10;
-  const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [resendTimerValue, setResendTimerValue] = useState(resendTimer);
 
-  const handleResendClick = () => {
-    setSecretCodeValue("");
-    setIsResendDisabled(true);
-    setResendTimerValue(resendTimer);
+  // const handleResendClick = () => {
+  //   setSecretCodeValue("");
+  //   setIsResendDisabled(true);
+  //   setResendTimerValue(resendTimer);
+  // };
+
+  const handleResendClick = async () => {
+    // const formattedPhoneNumber = `996${}`;
+    // setPhoneNumber(formattedPhoneNumber);
+    // dispatch(login({ phoneNumber: formattedPhoneNumber }));
+
+    try {
+      const response = await instance.post(endpoints.baristaSendCode, {
+        phoneNumber: phone,
+      });
+
+      if (response.status === 201) {
+        setSecretCodeValue("");
+        setIsResendDisabled(true);
+        setResendTimerValue(resendTimer);
+      }
+    } catch (error) {
+      console.error("Error sending verification code", error);
+    }
   };
+
+  useEffect(() => {
+    async function fetchVerificationCode() {
+      try {
+        const requestBody = {
+          verificationCode: secretCodeValue,
+        };
+        const response = await instance.post(endpoints.baristaVerifyCode, {
+          requestBody,
+        });
+        console.log("response:", response);
+        if (response.status === 201) {
+          const receivedAccessToken = response.data.accessToken;
+          setAccessToken(receivedAccessToken);
+          console.log(accessToken);
+        }
+      } catch (error) {
+        console.error("Error fetching verification code", error);
+      }
+    }
+
+    fetchVerificationCode();
+  }, [secretCodeValue, accessToken]);
 
   useEffect(() => {
     let intervalId;
@@ -78,7 +121,7 @@ export function LoginForm2({ nextStep }) {
       </Heading>
 
       <Text textAlign={"center"} fontSize="24px" fontWeight={700}>
-        Код подтверждения был отправлен на номер <br /> +996 {phone}
+        Код подтверждения был отправлен на номер <br /> +{phone}
       </Text>
 
       <VStack spacing={6} my={"25px"}>

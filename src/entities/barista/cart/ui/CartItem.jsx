@@ -27,7 +27,7 @@ export function CartItem({ dish }) {
   const input = getInputProps();
 
   return (
-    <Box>
+      <Box>
       <VStack py="20px">
         <Flex w={"full"}>
           <Image src={dish.image} />
@@ -56,14 +56,6 @@ export function CartItem({ dish }) {
               ) : (
                 <VisuallyHidden>No Notes</VisuallyHidden>
               )}
-              {/* <List color={"#fff"} display="flex" flexDirection="column" justifyContent="end" fontSize="16px" fontWeight="400" >
-                <ListItem>
-                  {dish.notes.milkType}
-                </ListItem>
-                <ListItem>
-                  {dish.notes.syrup}
-                </ListItem>
-              </List> */}
               <Flex
                 w="40%"
                 fontSize="18px"
@@ -105,6 +97,6 @@ export function CartItem({ dish }) {
         </Flex>
       </VStack>
       <Divider borderBottomWidth="2px" opacity={1} borderRadius="30px" />
-    </Box>
+      </Box>
   );
 }

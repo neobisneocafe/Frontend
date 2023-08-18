@@ -1,32 +1,25 @@
-const { configureStore, createSlice } = require("@reduxjs/toolkit");
+import { applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { rootReducer } from "./rootReducers";
+const { configureStore } = require("@reduxjs/toolkit");
 
-const initialState = {
-  value: { phoneNumber: "", firstname: "", lastname: "" },
-};
-const userSlice = createSlice({
-  name: "user",
-  initialState,
-  reducers: {
-    login: (state, action) => {
-      state.value = action.payload;
-    },
+const initialState = {}
 
-    logout: (state) => {
-      state = initialState;
-    },
-  },
-});
-
-export const { login, logout } = userSlice.actions;
+const middleware = [thunk]
 
 export function makeStore() {
-  const store = configureStore({
-    reducer: {
-      user: userSlice.reducer,
-    },
-  });
 
-  return store;
+  const composedEnhancer = composeWithDevTools(applyMiddleware(...middleware)); // Compose enhancer
+  
+  const store = configureStore({
+    reducer: rootReducer,
+    initialState,
+    composedEnhancer,
+  })
+
+  return store
 }
+
 
 export const appAdminStore = makeStore();

@@ -13,7 +13,8 @@ export function Paginaiton ({ currentPage, totalPages, onPageChange }){
           <Button
             key={page}
             variant={currentPage === page ? "solid" : "outline"}
-            colorScheme={currentPage === page ? "blue" : "gray"}
+            background={currentPage === page ? "rgba(0, 49, 93, 1)" : "light gray"}
+            color={currentPage === page ? "#fff" : "rgba(0, 49, 93, 1)"}
             onClick={() => onPageChange(page)}
           >
             {page}

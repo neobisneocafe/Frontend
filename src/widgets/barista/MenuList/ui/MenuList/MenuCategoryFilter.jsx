@@ -1,47 +1,57 @@
-import { Button, HStack } from "@chakra-ui/react";
-import { Coffee } from "../Icons/Coffee";
-import { Dessert } from "../Icons/Dessert";
-import { Bakery } from "../Icons/Bakery";
-import { Cocktail } from "../Icons/Cocktail";
-import { Tea } from "../Icons/Tea";
-import "./MenuList.scss"
+import { Box, Button, HStack, Image } from "@chakra-ui/react";
+import "./MenuList.scss";
+import { useEffect, useState } from "react";
+import instance, { endpoints } from "@/shared/api/apiConfig";
 
-const CategoryItems = [
-    { icon: <Coffee/>, category: "Кофе" },
-    { icon: <Dessert/>, category: "Десерты" },
-    { icon: <Bakery/> , category: "Выпечка" },
-    { icon: <Cocktail/>, category: "Коктейли" },
-    { icon: <Tea/>, category: "Чай" },
-  ];
+export function MenuCategoryFilter({ activeFilter, setActiveFilter }) {
+  const [categoryList, setCategoryList] = useState([]);
+  // console.log(activeFilter)
 
-export function MenuCategoryFilter({ activeFilter, setActiveFilter }){
-  const handleFilterClick = (category) => {
-    setActiveFilter(category === activeFilter ? "" : category);
+  useEffect(() => {
+    async function fetctCategoryList() {
+      const { data } = await instance.get(endpoints.categoryList);
+      setCategoryList(data.sort((a, b) => a.id - b.id));
+    }
+    fetctCategoryList();
+  }, []);
+
+
+  const handleFilterClick = (id) => {
+    setActiveFilter(id === activeFilter ? "" : id);
   };
 
-    return (
-        <HStack w="full" h="49px" justifyContent='center' mt={8}>
-        {CategoryItems.map((item) => (
+  return (
+    <HStack w="full" h="49px" justifyContent="center" mt={8}>
+      {categoryList.map((item) => (
+        <Box w="153px"
+        h="full"
+        key={item.id}
+        mr="16px"
+        borderRadius="30px"
+        fontSize="18px"
+        transition="0.3s ease-in-out"
+        display="flex"
+        flexDirection="row-reverse"
+        justifyContent="space-evenly"
+        alignItems="center"
+        _hover={{
+          transform: "scale(1.1)",
+        }}
+        bg={activeFilter === item.id ? "#FF8B5B" : "inherit"}>
           <Button
-            className={activeFilter === item.category ? "active" : "inactive"}
-            w='153px'
-            h="full"
-            key={item.category}
-            leftIcon={item.icon}
-            mr="16px"
-            borderRadius="30px"
-            fontSize="18px"
-            transition="0.3s ease-in-out"
             _hover={{
-              transform:"scale(1.1)"
+              background: "unset",
             }}
-            color={activeFilter === item.category ? "#fff" : "#000"}
-            bg={activeFilter === item.category ? "#FF8B5B" : "inherit"}
-            onClick={() => handleFilterClick(item.category)}
+            color={activeFilter === item.id ? "#fff" : "#000"}
+            p={0}
+            bg={"transparent"}
+            onClick={() => handleFilterClick(item.id, item.name)}
           >
-            {item.category}
+            {item.name}
           </Button>
-        ))}
-      </HStack>
-    )
+          <Image src={item.photo} width="35px"/>
+        </Box>
+      ))}
+    </HStack>
+  );
 }

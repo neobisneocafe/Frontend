@@ -13,7 +13,9 @@ import {
   Text,
   useDisclosure,
   VisuallyHidden,
+  VStack,
 } from "@chakra-ui/react";
+import { Animal } from "./Images/Animal";
 
 export function CartList() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,6 +42,7 @@ export function CartList() {
         <Text>Заказ на вынос</Text>
         <Text>0 сом</Text>
       </Button>
+      
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent
@@ -66,6 +69,7 @@ export function CartList() {
             flexDirection={"column"}
             justifyContent={"space-between"}
           >
+            {CartItems.length >0?(
             <Container>
               {CartItems.map((dish) => (
                 <CartItem key={dish.dish_id} dish={dish} />
@@ -86,16 +90,28 @@ export function CartList() {
                 Добавить
               </Button>
             </Container>
+
+            ) : (
+              <VStack height={"full"} justifyContent="center">
+                <Text fontWeight={700} fontSize="24px">Вы еще ничего не добавили</Text>
+                <Animal/>
+              </VStack>
+            )}
             <Container w={"full"}>
-              <Box display={"flex"} justifyContent="space-between" w={"full"}>
+              <Box display={"flex"}
+                justifyContent="space-between"
+                w={"full"}
+                fontWeight={700}
+                fontSize={"22px"}>
                 <Text>Итого</Text>
-                <Text>380 сом</Text>
+                <Text>0 сом</Text>
               </Box>
               <Button
                 height={"60px"}
                 mt={"24px"}
                 mb={"32px"}
                 w={"full"}
+                fontSize={"18px"}
                 background="#FF8B5B"
                 color="white"
                 borderRadius="10px"
