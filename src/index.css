@@ -20,3 +20,12 @@ code {
 ul li{
   list-style-type: none;
 }
+
+#dish_decs li{
+  list-style-type:initial
+}
+
+.dish_description img{
+  width: 165px;
+  height: 165px;
+}

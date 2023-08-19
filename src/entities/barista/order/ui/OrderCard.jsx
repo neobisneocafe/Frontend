@@ -35,6 +35,7 @@ import instance, { endpoints } from "@/shared/api/apiConfig";
 
 export function OrderCard({ order }) {
   const [dishes, setDishes] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     async function fetchDishes() {
@@ -46,7 +47,6 @@ export function OrderCard({ order }) {
 
   const displayedItems = order.order_content.slice(0, 3);
   const remainingItemCount = order.order_content.length - 3;
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getDishesForOrder = () => {
     return displayedItems.map((itemId) => {

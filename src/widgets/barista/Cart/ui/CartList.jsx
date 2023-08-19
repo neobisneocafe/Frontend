@@ -15,10 +15,14 @@ import {
   VisuallyHidden,
   VStack,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 import { Animal } from "./Images/Animal";
 
 export function CartList() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const cartItems = useSelector(state => state.cart.cart)
+  const totalPrice = useSelector(state => state.cart.totalPrice)
+  console.log("totalPrice",totalPrice)
 
   return (
     <>
@@ -40,7 +44,7 @@ export function CartList() {
         _hover={{ background: "#FFC1A8" }}
       >
         <Text>Заказ на вынос</Text>
-        <Text>0 сом</Text>
+        <Text>{totalPrice} сом</Text>
       </Button>
       
       <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
@@ -69,10 +73,10 @@ export function CartList() {
             flexDirection={"column"}
             justifyContent={"space-between"}
           >
-            {CartItems.length >0?(
+            {cartItems.length >0?(
             <Container>
-              {CartItems.map((dish) => (
-                <CartItem key={dish.dish_id} dish={dish} />
+              {cartItems.map((dish, i) => (
+                <CartItem key={i} dish={dish} />
               ))}
               <Button
                 height={"60px"}
@@ -86,6 +90,7 @@ export function CartList() {
                     background:"#FF8B5B",
                     color:"#fff"
                 }}
+                onClick={onClose}
               >
                 Добавить
               </Button>
@@ -104,7 +109,7 @@ export function CartList() {
                 fontWeight={700}
                 fontSize={"22px"}>
                 <Text>Итого</Text>
-                <Text>0 сом</Text>
+                <Text>{totalPrice} сом</Text>
               </Box>
               <Button
                 height={"60px"}
@@ -117,7 +122,7 @@ export function CartList() {
                 borderRadius="10px"
                 _hover={{ background: "#FFC1A8" }}
               >
-                Заказать
+                Закрыть счет
               </Button>
             </Container>
           </DrawerBody>

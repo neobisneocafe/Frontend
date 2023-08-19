@@ -1,3 +1,4 @@
+import { removeFromCart } from "@/baristaApp/cartSlice";
 import {
   Box,
   Button,
@@ -10,10 +11,19 @@ import {
   Text,
   useNumberInput,
   VStack,
-  VisuallyHidden
+  CloseButton,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter
 } from "@chakra-ui/react";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
 
-export function CartItem({ dish }) {
+export function CartItem({dish}) {
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
     useNumberInput({
       step: 1,
@@ -21,16 +31,48 @@ export function CartItem({ dish }) {
       min: 1,
       max: 10,
     });
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = useRef()
 
   const inc = getIncrementButtonProps();
   const dec = getDecrementButtonProps();
   const input = getInputProps();
 
+  const dispatch = useDispatch()
+
+
   return (
       <Box>
       <VStack py="20px">
         <Flex w={"full"}>
-          <Image src={dish.image} />
+          <CloseButton position={"absolute"} right={12} onClick={onOpen}/>
+          <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Удаление позиции
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Вы точно хотите удалить "{dish.name}" из корзины?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Нет
+              </Button>
+              <Button colorScheme='red' onClick={() => dispatch(removeFromCart({id: dish.id}))} ml={3}>
+                Да, удалить
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+          <Image src={dish.image} width="104px" height={"104px"} borderRadius="24px"/>
           <Flex
             w={"full"}
             direction="column"
@@ -54,7 +96,7 @@ export function CartItem({ dish }) {
                   <ListItem>{dish.notes.syrup}</ListItem>
                 </List>
               ) : (
-                <VisuallyHidden>No Notes</VisuallyHidden>
+                <Box visibility={"hidden"} >No Notes</Box>
               )}
               <Flex
                 w="40%"

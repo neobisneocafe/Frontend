@@ -10,6 +10,6 @@ const createApp = (isAdminApp) => {
   }
 };
 
-createApp(true);
+createApp(false);
 
 export { createApp };

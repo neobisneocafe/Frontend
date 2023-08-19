@@ -90,7 +90,7 @@ export function LoginForm1({ nextStep, setPhoneNumber }) {
               minHeight={70}
               border={"none"}
               bg="#EDEDED"
-              width={"43%"}
+              width={"42%"}
               justifyContent="right"
               p={0}
             />
@@ -98,7 +98,7 @@ export function LoginForm1({ nextStep, setPhoneNumber }) {
               type="tel"
               placeholder="555-55-55-55"
               justifyContent="left"
-              maxLength={28}
+              maxLength={9}
               minHeight={70}
               bg="#EDEDED"
               border={"none"}

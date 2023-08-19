@@ -1,3 +1,5 @@
+import cartSlice from "./cartSlice";
+
 const { configureStore, createSlice } = require("@reduxjs/toolkit");
 
 const initialState = {
@@ -23,6 +25,7 @@ export function makeStore() {
   const store = configureStore({
     reducer: {
       user: userSlice.reducer,
+      cart: cartSlice
     },
   });
 

@@ -1,4 +1,4 @@
-import { Center, Flex, VStack } from "@chakra-ui/react";
+import { Center, Flex, Spinner, VStack } from "@chakra-ui/react";
 import { MenuCategoryFilter } from "./MenuCategoryFilter";
 import { useEffect, useState } from "react";
 import { DishCard } from "@/entities/barista/dish";
@@ -28,6 +28,7 @@ export function MenuList() {
         Меню
       </Center>
       <MenuCategoryFilter activeFilter={activeCategoryFilter} setActiveFilter={setActiveCategoryFilter}/>
+      {dishList ? (
       <Flex gap={4} w="full" mt={6} px={8} flexWrap="wrap">
         {
           filteredDishList.map(dish => (
@@ -35,6 +36,10 @@ export function MenuList() {
           ))
         }
       </Flex>
+      ):
+      (
+        <Spinner/>
+      )}
     </VStack>
   );
 }
